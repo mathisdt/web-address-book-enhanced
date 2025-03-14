@@ -1,0 +1,6 @@
+/target/
+/.ebean.h2.autofetch
+/logs/
+/.settings/
+.project
+.classpath
