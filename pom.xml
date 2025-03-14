@@ -39,7 +39,7 @@
 
         <!-- dependency versions -->
         <itext.version>4.2.1</itext.version>
-        <jasperreports.version>3.7.4</jasperreports.version>
+        <jasperreports.version>7.0.2</jasperreports.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     </properties>
