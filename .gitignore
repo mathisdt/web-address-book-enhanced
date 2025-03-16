@@ -1,0 +1,8 @@
+/target/
+/logs/
+/.settings/
+.project
+.classpath
+application-local.properties
+application-local.yaml
+application-local.yml
