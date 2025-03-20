@@ -15,6 +15,7 @@ import lombok.Setter;
 public class ReportConfiguration {
     private String dateFormat;
     private String title;
+    private String css;
     private String header;
     private String family;
     private String person;

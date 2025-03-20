@@ -1,4 +1,4 @@
-INSERT INTO `family` (`id`, `last_name`, `street`, `postal_code`, `city`, `contact1`, `contact2`, `contact3`, `remarks`, `last_update`) VALUES
+INSERT INTO family (id, last_name, street, postal_code, city, contact1, contact2, contact3, remarks, last_update) VALUES
 (1, 'Family 1', 'Street 1', '123', 'City 1', '0123-45678', '', NULL, NULL, '2014-07-02 11:52:59'),
 (2, 'Family 2', 'Street 2', '123', 'City 2', '0234-56789', '', NULL, NULL, '2012-07-04 10:49:43'),
 (3, 'Family 3', 'Street 3', '123', 'City 3', '0345-67890', '', NULL, NULL, '2017-02-23 08:00:49'),
@@ -8,7 +8,7 @@ INSERT INTO `family` (`id`, `last_name`, `street`, `postal_code`, `city`, `conta
 (7, 'Family 7', 'Street 7', '123', 'City 7', '0345-67890', '', NULL, NULL, '2017-02-23 08:00:49'),
 (8, 'Family 8', 'Street 8', '123', 'City 8', '0456-78901', '', NULL, NULL, '2017-01-24 09:53:56');
 
-INSERT INTO `person` (`id`, `first_name`, `last_name`, `birthday`, `contact1`, `contact2`, `contact3`, `remarks`, `family_id`, `last_update`, `ordering`) VALUES
+INSERT INTO person (id, first_name, last_name, birthday, contact1, contact2, contact3, remarks, family_id, last_update, ordering) VALUES
 (1, 'Surname 1-1', NULL, '01.01.', '', 'one1@example.com', NULL, NULL, 1, '2014-07-02 11:52:59', 0),
 (2, 'Surname 1-2', NULL, '01.02.', '', 'one2@example.com', NULL, NULL, 1, '2014-07-02 11:52:59', 1),
 (3, 'Surname 1-3', NULL, '01.03.', '', 'one3@example.com', NULL, NULL, 1, '2014-07-02 11:52:59', 2),

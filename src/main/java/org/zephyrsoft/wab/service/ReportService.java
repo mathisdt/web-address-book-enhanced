@@ -34,19 +34,25 @@ public class ReportService {
     private final FamilyRepository familyRepository;
 
     public byte[] exportAsPdf() {
-        String html = "<html><head><title>" + reportConfiguration.getTitle() + "</title></head><body>\n" +
-            getHeader() +
-            familyRepository.findAll().stream()
-                .map(this::getFamily)
-                .collect(joining("\n", "\n", "\n")) +
-            "</body></html>";
-
+        String html = createHtml();
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(toXHTML(html));
         renderer.layout();
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         renderer.createPDF(outStream);
         return outStream.toByteArray();
+    }
+
+    String createHtml() {
+        return "<html><head><title>" + reportConfiguration.getTitle() + "</title><style>\n" +
+            reportConfiguration.getCss() +
+            "\n</style></head><body>\n" +
+            getHeader() +
+            familyRepository.findAll().stream()
+                .sorted()
+                .map(this::getFamily)
+                .collect(joining("\n", "\n", "\n")) +
+            "</body></html>";
     }
 
     private static String toXHTML(String html) {
@@ -97,6 +103,7 @@ public class ReportService {
             case ADDRESS -> family.getAddress();
             case CONTACTS -> family.getContacts();
             case PERSONS -> family.getMembers().stream()
+                .sorted()
                 .map(this::getPerson)
                 .collect(joining("\n", "\n", "\n"));
         });
