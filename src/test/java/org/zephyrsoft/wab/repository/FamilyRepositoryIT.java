@@ -21,4 +21,13 @@ public class FamilyRepositoryIT {
         assertThat(families).hasSize(8);
         assertThat(families.getFirst().getMembers()).hasSize(4);
     }
+
+    @Test
+    void familyIdGenerated() {
+        Family f1 = new Family();
+        assertThat(f1.getId()).isNull();
+        Family f2 = familyRepository.save(f1);
+        assertThat(f1.getId()).isNotNull();
+        assertThat(f1.getId()).isEqualTo(f2.getId());
+    }
 }

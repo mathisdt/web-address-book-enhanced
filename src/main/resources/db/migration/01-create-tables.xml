@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="01" author="Mathis Dirksen-Thedens">
+
+        <createTable tableName="family">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="last_update" type="timestamp"/>
+            <column name="last_name" type="varchar(255)"/>
+            <column name="street" type="varchar(255)"/>
+            <column name="postal_code" type="varchar(255)"/>
+            <column name="city" type="varchar(255)"/>
+            <column name="contact1" type="varchar(255)"/>
+            <column name="contact2" type="varchar(255)"/>
+            <column name="contact3" type="varchar(255)"/>
+            <column name="remarks" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="person">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="last_update" type="timestamp"/>
+            <column name="ordering" type="int"/>
+            <column name="family_id" type="int">
+                <constraints referencedTableName="family"
+                             referencedColumnNames="id"
+                             foreignKeyName="fk_personfamilyid"/>
+            </column>
+            <column name="first_name" type="varchar(255)"/>
+            <column name="last_name" type="varchar(255)"/>
+            <column name="birthday" type="varchar(255)"/>
+            <column name="contact1" type="varchar(255)"/>
+            <column name="contact2" type="varchar(255)"/>
+            <column name="contact3" type="varchar(255)"/>
+            <column name="remarks" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="id_gen">
+            <column name="gen_key" type="varchar(255)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="gen_value" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>
