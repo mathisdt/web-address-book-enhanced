@@ -78,15 +78,6 @@ public class Family implements HasContacts, ComparableBean<Family> {
 		return Collections.unmodifiableList(members);
 	}
 
-	public void setMembers(final List<Person> members) {
-		initMembersIfNecessary();
-		this.members.clear();
-		if (members != null) {
-			this.members.addAll(members);
-		}
-		setMemberOrdering();
-	}
-
 	public Person addNewMember() {
 		initMembersIfNecessary();
 		Person newPerson = new Person();
@@ -101,11 +92,10 @@ public class Family implements HasContacts, ComparableBean<Family> {
 		return members.contains(o);
 	}
 
-	public boolean removeMember(final Person o) {
+	public void removeMember(final Person o) {
 		initMembersIfNecessary();
-		boolean returnValue = members.remove(o);
+		members.remove(o);
 		setMemberOrdering();
-		return returnValue;
 	}
 
 	public boolean mayMoveUp(final Person p) {
@@ -120,7 +110,7 @@ public class Family implements HasContacts, ComparableBean<Family> {
 		return containsMember(p) && members != null && members.lastIndexOf(p) < members.size() - 1;
 	}
 
-	public Person moveUp(final Person p) {
+	public void moveUp(final Person p) {
 		initMembersIfNecessary();
 		if (mayMoveUp(p)) {
 			int sourceIndex = members.indexOf(p);
@@ -129,14 +119,10 @@ public class Family implements HasContacts, ComparableBean<Family> {
 			members.set(targetIndex, p);
 			members.set(sourceIndex, toSwitch);
 			setMemberOrdering();
-			// return the person which changed places with the given person
-			return toSwitch;
-		} else {
-			return null;
 		}
 	}
 
-	public Person moveDown(final Person p) {
+	public void moveDown(final Person p) {
 		initMembersIfNecessary();
 		if (mayMoveDown(p)) {
 			int sourceIndex = members.lastIndexOf(p);
@@ -145,10 +131,6 @@ public class Family implements HasContacts, ComparableBean<Family> {
 			members.set(targetIndex, p);
 			members.set(sourceIndex, toSwitch);
 			setMemberOrdering();
-			// return the person which changed places with the given person
-			return toSwitch;
-		} else {
-			return null;
 		}
 	}
 

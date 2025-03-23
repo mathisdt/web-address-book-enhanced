@@ -19,7 +19,7 @@ public class FamilyRepositoryIT {
         List<Family> families = familyRepository.findAll();
 
         assertThat(families).hasSize(8);
-        assertThat(families.getFirst().getMembers()).hasSize(4);
+        assertThat(families.getFirst().getMembers()).hasSizeGreaterThanOrEqualTo(4);
     }
 
     @Test

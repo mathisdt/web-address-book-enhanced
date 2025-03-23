@@ -37,9 +37,9 @@ public class ApiControllerIT {
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.length()").value(greaterThanOrEqualTo(7)))
-            .andExpect(jsonPath("$[0].lastName").value("Family 1"))
-            .andExpect(jsonPath("$[0].members.length()").value(greaterThanOrEqualTo(3)))
-            .andExpect(jsonPath("$[0].members[0].firstName").value("Surname 1-1"));
+            .andExpect(jsonPath("$[1].lastName").value("Family 1"))
+            .andExpect(jsonPath("$[1].members.length()").value(greaterThanOrEqualTo(3)))
+            .andExpect(jsonPath("$[1].members[0].firstName").value("Surname 1-1"));
     }
 
     @Test
@@ -217,7 +217,7 @@ public class ApiControllerIT {
 
     @Test
     void deletePerson_success() throws Exception {
-        mockMvc.perform(delete("/data/person/13"))
+        mockMvc.perform(delete("/data/person/14"))
             .andDo(print())
             .andExpect(status().isNoContent());
     }
@@ -280,18 +280,18 @@ public class ApiControllerIT {
 
     @Test
     void movePersonDown_success() throws Exception {
-        Family familyBeforeMoveDown = familyRepository.findById(5L).orElseThrow();
-        Person personBeforeMoveDown = familyBeforeMoveDown.getMembers().get(2);
+        Family familyBeforeMoveDown = familyRepository.findById(8L).orElseThrow();
+        Person personBeforeMoveDown = familyBeforeMoveDown.getMembers().getFirst();
 
-        assertEquals(2, personBeforeMoveDown.getOrdering());
+        assertEquals(0, personBeforeMoveDown.getOrdering());
 
         mockMvc.perform(put("/data/person/" + personBeforeMoveDown.getId() + "/moveDown"))
             .andDo(print())
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(greaterThan(0)))
-            .andExpect(jsonPath("$.members[3].id").value(personBeforeMoveDown.getId()))
-            .andExpect(jsonPath("$.members[3].ordering").value(personBeforeMoveDown.getOrdering() + 1))
-            .andExpect(jsonPath("$.members[3].firstName").value(personBeforeMoveDown.getFirstName()));
+            .andExpect(jsonPath("$.members[1].id").value(personBeforeMoveDown.getId()))
+            .andExpect(jsonPath("$.members[1].ordering").value(personBeforeMoveDown.getOrdering() + 1))
+            .andExpect(jsonPath("$.members[1].firstName").value(personBeforeMoveDown.getFirstName()));
     }
 
     @Test
