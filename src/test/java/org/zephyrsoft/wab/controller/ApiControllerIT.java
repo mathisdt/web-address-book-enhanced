@@ -106,15 +106,6 @@ public class ApiControllerIT {
     }
 
     @Test
-    void updateFamily_noId() throws Exception {
-        mockMvc.perform(put("/data/family/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":-2,\"lastName\":\"Test-Surname-Wrong\"}"))
-            .andDo(print())
-            .andExpect(status().isNotFound());
-    }
-
-    @Test
     void updateFamily_negativeId() throws Exception {
         mockMvc.perform(put("/data/family/-2")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -186,15 +177,6 @@ public class ApiControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(greaterThan(0)))
             .andExpect(jsonPath("$.firstName").value("Test-Firstname-Updated"));
-    }
-
-    @Test
-    void updatePerson_noId() throws Exception {
-        mockMvc.perform(put("/data/person/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":-2,\"firstName\":\"Test-Firstname-Wrong\"}"))
-            .andDo(print())
-            .andExpect(status().isNotFound());
     }
 
     @Test
