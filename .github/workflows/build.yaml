@@ -7,7 +7,7 @@ on:
 
 jobs:
   release:
-    uses: mathisdt/workflows/.github/workflows/maven.yaml@master
+    uses: mathisdt/workflows/.github/workflows/maven-angular.yaml@master
     with:
-      pattern-to-release: web-address-book-backend-*.jar
+      pattern-to-release: web-address-book-enhanced-*.jar
     secrets: inherit
