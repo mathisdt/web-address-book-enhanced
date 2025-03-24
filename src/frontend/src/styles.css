@@ -1,0 +1,49 @@
+.fs {
+  font-size: smaller;
+}
+.flex {
+  display: flex;
+}
+.row {
+  flex-direction: row;
+}
+.col {
+  flex-direction: column;
+}
+.indent1 {
+  margin-left: 70px;
+}
+.ml1 {
+  margin-left: 35px;
+}
+.mr1 {
+  margin-right: 10px;
+}
+.mt1 {
+  margin-top: 8px;
+}
+.mb1 {
+  margin-bottom: 8px;
+}
+.border1 {
+  border-top: 4px solid #e8e835;
+}
+.w1 {
+  width: 150px;
+}
+.w2 {
+  width: 160px;
+}
+.wm100 {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.l {
+  font-size: smaller;
+  color: #757575;
+  margin-right: 5px;
+}
+.l::after {
+  content: ":"
+}

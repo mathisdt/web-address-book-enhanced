@@ -1,0 +1,46 @@
+<div class="flex row mt1">
+  <div class="mr1 w1">
+    <div class="wm100" [hidden]="isEdit()">{{family().lastName}}</div>
+    <input class="w1" title="Lastname" [hidden]="!isEdit()" [(ngModel)]="familyForEdit.lastName"/>
+  </div>
+  <div class="mr1 w1">
+    <div class="wm100" [hidden]="isEdit()">{{family().street}}</div>
+    <input class="w1" title="Street" [hidden]="!isEdit()" [(ngModel)]="familyForEdit.street"/>
+  </div>
+  <div class="mr1 w1">
+    <div class="wm100" [hidden]="isEdit()">{{family().postalCode}}</div>
+    <input class="w1" title="Postal Code" [hidden]="!isEdit()" [(ngModel)]="familyForEdit.postalCode"/>
+  </div>
+  <div class="mr1 w1">
+    <div class="wm100" [hidden]="isEdit()">{{family().city}}</div>
+    <input class="w1" title="City" [hidden]="!isEdit()" [(ngModel)]="familyForEdit.city"/>
+  </div>
+  <div class="mr1 w1">
+    <div class="wm100" [hidden]="isEdit()">{{family().contact1}}</div>
+    <input class="w1" title="Contact 1" [hidden]="!isEdit()" [(ngModel)]="familyForEdit.contact1"/>
+  </div>
+  <div class="mr1 w1">
+    <div class="wm100" [hidden]="isEdit()">{{family().contact2}}</div>
+    <input class="w1" title="Contact 2" [hidden]="!isEdit()" [(ngModel)]="familyForEdit.contact2"/>
+  </div>
+  <div class="mr1 w1">
+    <div class="wm100" [hidden]="isEdit()">{{family().contact3}}</div>
+    <input class="w1" title="Contact 3" [hidden]="!isEdit()" [(ngModel)]="familyForEdit.contact3"/>
+  </div>
+  <div class="mr1 w1">
+    <div class="wm100" [hidden]="isEdit()">{{family().remarks}}</div>
+    <input class="w1" title="Remarks" [hidden]="!isEdit()" [(ngModel)]="familyForEdit.remarks"/>
+  </div>
+  <div class="mr1">
+    <button [hidden]="isEdit()" (click)="edit()">Edit</button>
+    <button [hidden]="!isEdit()" (click)="save()" class="mr1">Save</button>
+    <button [hidden]="!isEdit()" (click)="cancel()">Cancel</button>
+  </div>
+  <div class="mr1"><button (click)="delete()">Delete</button></div>
+</div>
+<div class="flex col indent1 mb1">
+  @for (person of family().members; track person.id) {
+    <person-component [person]="person" (personDeleted)="memberDeleted($event)" />
+  }
+  <div class="mt1"><button (click)="addMember()">Add Member</button></div>
+</div>

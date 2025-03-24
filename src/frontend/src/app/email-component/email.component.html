@@ -1,0 +1,10 @@
+<label class="l" for="batchSize">Email Batch Size</label><select #batchSize id="batchSize" class="mr1" (change)="calculateBatches(parseInt(batchSize.value))">
+  <option value="0" selected="selected">all recipients</option>
+  <option value="50">50 recipients</option>
+  <option value="100">100 recipients</option>
+  <option value="150">150 recipients</option>
+  <option value="200">200 recipients</option>
+</select>
+@for (batch of batches(); track batch.index) {
+  <a class="mr1" href="mailto:?bcc={{ batch.emails }}">Send to {{ batch.batchSize * batch.index + 1 }} - {{ batch.batchSize * batch.index + batch.emails.length }}</a>
+}

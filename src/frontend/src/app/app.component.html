@@ -1,0 +1,10 @@
+<h1>{{title}}</h1>
+<div style="display:inline-block"><download-component /></div>
+<div class="ml1" style="display:inline-block"><email-component [families]="families()"/></div>
+<br /><br />
+<div class="flex col fs" style="width: 100%">
+  @for (family of families(); track family.id) {
+    <div class="border1"><family-component [family]="family" (familyDeleted)="familyDeleted($event)" /></div>
+  }
+  <div class="border1"><button class="mt1" (click)="createFamily()">Add Family</button></div>
+</div>
