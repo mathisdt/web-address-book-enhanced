@@ -3,13 +3,14 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Family} from './model/Family';
 import {Person} from './model/Person';
+import {environment} from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendService {
   private headers = {"Accept": "application/json", "Content-Type": "application/json"};
-  baseUrl: string = "http://localhost:8080/data";
+  baseUrl: string = environment.backendUrl;
   private http: HttpClient = inject(HttpClient);
 
   readAllFamilies(): Observable<Family[]> {
