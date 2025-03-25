@@ -16,6 +16,7 @@ export class PersonComponent implements OnInit {
   private backend: BackendService = inject(BackendService);
   person = input.required<Person>();
   personDeleted = output<Person>();
+  personReordered = output<Family>();
   protected isEdit = signal(false);
   personForEdit: Person = {
     birthday: null,
@@ -79,5 +80,17 @@ export class PersonComponent implements OnInit {
 
   cancel() {
     this.isEdit.set(false);
+  }
+
+  moveUp() {
+    this.backend.movePersonUp(<number>this.person().id).subscribe(
+      family => this.personReordered.emit(family)
+    );
+  }
+
+  moveDown() {
+    this.backend.movePersonDown(<number>this.person().id).subscribe(
+      family => this.personReordered.emit(family)
+    );
   }
 }

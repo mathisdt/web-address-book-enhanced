@@ -40,7 +40,7 @@
 </div>
 <div class="flex col indent1 mb1">
   @for (person of family().members; track person.id) {
-    <person-component [person]="person" (personDeleted)="memberDeleted($event)" />
+    <person-component [person]="person" (personDeleted)="memberDeleted($event)" (personReordered)="membersReordered($event)" />
   }
   <div class="mt1"><button (click)="addMember()">Add Member</button></div>
 </div>

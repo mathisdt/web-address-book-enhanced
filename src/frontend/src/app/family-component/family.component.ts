@@ -82,6 +82,10 @@ export class FamilyComponent implements OnInit {
       this.family().members?.filter((p: Person) => p.id !== deletedMember.id);
   }
 
+  membersReordered(familyWithReorderedMembers: Family) {
+    this.family().members = familyWithReorderedMembers.members;
+  }
+
   save() {
     this.family().lastName = this.familyForEdit.lastName;
     this.family().street = this.familyForEdit.street;

@@ -27,10 +27,10 @@
     <div class="wm100" [hidden]="isEdit()">{{ person().remarks }}</div>
     <input class="w2" title="Remarks" [hidden]="!isEdit()" [(ngModel)]="personForEdit.remarks"/>
   </div>
-  <div class="mr1">
-    <button [hidden]="isEdit()" (click)="edit()">Edit</button>
-    <button [hidden]="!isEdit()" (click)="save()" class="mr1">Save</button>
-    <button [hidden]="!isEdit()" (click)="cancel()">Cancel</button>
-  </div>
-  <div class="mr1"><button (click)="delete()">Delete</button></div>
+  <button [hidden]="isEdit()" (click)="edit()" class="mr1">Edit</button>
+  <button [hidden]="isEdit()" (click)="moveUp()" class="mr1">Move Up</button>
+  <button [hidden]="isEdit()" (click)="moveDown()" class="mr1">Move Down</button>
+  <button [hidden]="isEdit()" (click)="delete()">Delete</button>
+  <button [hidden]="!isEdit()" (click)="save()" class="mr1">Save</button>
+  <button [hidden]="!isEdit()" (click)="cancel()">Cancel</button>
 </div>
