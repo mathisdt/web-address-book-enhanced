@@ -22,12 +22,14 @@ import jakarta.persistence.TableGenerator;
 import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * family data bean
  */
 @Getter
 @Setter
+@FieldNameConstants
 @Entity
 @Table(name = "family")
 public class Family implements HasContacts, ComparableBean<Family> {
