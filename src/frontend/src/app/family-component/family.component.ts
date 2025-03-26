@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit, output, signal} from '@angular/core';
+import {Component, inject, input, output, signal} from '@angular/core';
 import {Family} from '../model/Family';
 import {Person} from '../model/Person';
 import {PersonComponent} from '../person-component/person.component';
@@ -14,43 +14,24 @@ import {BackendService} from '../backend.service';
   templateUrl: './family.component.html',
   styleUrl: './family.component.css'
 })
-export class FamilyComponent implements OnInit {
+export class FamilyComponent {
   private backend: BackendService = inject(BackendService);
   family = input.required<Family>();
+  familyChanged = output<Family>();
   familyDeleted = output<Family>();
   protected isEdit = signal(false);
-  familyForEdit : Family = {
-    city: null,
-    contact1: null,
-    contact2: null,
-    contact3: null,
-    id: null,
-    lastName: null,
-    lastUpdate: null,
-    postalCode: null,
-    remarks: null,
-    street: null,
-    members: []
-  };
-
-  ngOnInit(): void {
-    this.familyForEdit = this.family();
-  }
+  familyForEdit : Family = new Family(null, null, null, null, null, null, null, null);
 
   edit() {
-    this.familyForEdit = {
-      lastName: this.family().lastName,
-      street: this.family().street,
-      postalCode: this.family().postalCode,
-      city: this.family().city,
-      contact1: this.family().contact1,
-      contact2: this.family().contact2,
-      contact3: this.family().contact3,
-      remarks: this.family().remarks,
-      id: null,
-      lastUpdate: null,
-      members: null
-    };
+    this.familyForEdit = new Family(
+      this.family().lastName,
+      this.family().street,
+      this.family().postalCode,
+      this.family().city,
+      this.family().contact1,
+      this.family().contact2,
+      this.family().contact3,
+      this.family().remarks);
 
     this.isEdit.set(true);
   }
@@ -72,6 +53,7 @@ export class FamilyComponent implements OnInit {
         }
         // @ts-ignore
         this.family().members.push(created);
+        this.familyChanged.emit(this.family());
         console.log(`created person ${created.id} for family ${this.family().id}`)
       }
     )
@@ -80,24 +62,22 @@ export class FamilyComponent implements OnInit {
   memberDeleted(deletedMember: Person) {
     this.family().members =
       this.family().members?.filter((p: Person) => p.id !== deletedMember.id);
+    this.familyChanged.emit(this.family());
   }
 
   membersReordered(familyWithReorderedMembers: Family) {
     this.family().members = familyWithReorderedMembers.members;
+    this.familyChanged.emit(this.family());
   }
 
   save() {
-    this.family().lastName = this.familyForEdit.lastName;
-    this.family().street = this.familyForEdit.street;
-    this.family().postalCode = this.familyForEdit.postalCode;
-    this.family().city = this.familyForEdit.city;
-    this.family().contact1 = this.familyForEdit.contact1 === null ? null : this.familyForEdit.contact1.trim();
-    this.family().contact2 = this.familyForEdit.contact2 === null ? null : this.familyForEdit.contact2.trim();
-    this.family().contact3 = this.familyForEdit.contact3 === null ? null : this.familyForEdit.contact3.trim();
-    this.family().remarks = this.familyForEdit.remarks;
+    this.family().takeValuesFrom(this.familyForEdit);
 
     this.backend.updateFamily(this.family()).subscribe(
-      () => console.log(`saved family with ID ${this.family().id}`)
+      () => {
+        this.familyChanged.emit(this.family());
+        console.log(`saved family with ID ${this.family().id}`);
+      }
     );
 
     this.isEdit.set(false);
@@ -105,5 +85,15 @@ export class FamilyComponent implements OnInit {
 
   cancel() {
     this.isEdit.set(false);
+  }
+
+  personChanged(changedPerson: Person) {
+    for (const person of this.family().members!) {
+      if (person.id === changedPerson.id) {
+        person.takeValuesFrom(changedPerson);
+        break;
+      }
+    }
+    this.familyChanged.emit(this.family());
   }
 }

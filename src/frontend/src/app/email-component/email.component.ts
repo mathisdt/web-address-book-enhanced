@@ -1,4 +1,4 @@
-import {Component, input, InputSignal, OnChanges, signal, SimpleChanges, WritableSignal} from '@angular/core';
+import {Component, effect, input, InputSignal, OnChanges, signal, SimpleChanges, WritableSignal} from '@angular/core';
 import {Family} from '../model/Family';
 import {EmailBatch} from '../model/EmailBatch';
 
@@ -8,17 +8,18 @@ import {EmailBatch} from '../model/EmailBatch';
   templateUrl: './email.component.html',
   styleUrl: './email.component.css'
 })
-export class EmailComponent implements OnChanges {
+export class EmailComponent {
   families: InputSignal<Family[]> = input.required<Family[]>();
+  batchSize: WritableSignal<number> = signal<number>(0);
   batches: WritableSignal<EmailBatch[]> = signal<EmailBatch[]>(Array<EmailBatch>());
 
   private emailRegEx: RegExp = new RegExp("^\\S+@\\S+\\.\\S+$");
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes["families"]) {
-      console.log(this.families().length)
-      this.calculateBatches(0);
-    }
+  constructor() {
+    effect(() => {
+      console.log(`detected ${this.families().length} families`)
+      this.calculateBatches(this.batchSize());
+    });
   }
 
   extractEmailAddresses(): string[] {
@@ -57,13 +58,9 @@ export class EmailComponent implements OnChanges {
     return contact !== null && this.emailRegEx.test(contact);
   }
 
-  sendEmail(batchIndex: number) {
-    console.log(`sending email to batch index ${batchIndex} with emails ${this.batches()[batchIndex].emails}`)
-    // TODO
-  }
-
   calculateBatches(batchSize: number = 0): void {
     console.log(`calculating batches with batch size ${batchSize}`)
+    this.batchSize.update(oldBatchSize => batchSize);
     const emailAddresses: string[] = this.extractEmailAddresses();
     const result: EmailBatch[] = Array<EmailBatch>();
     if (batchSize === 0) {

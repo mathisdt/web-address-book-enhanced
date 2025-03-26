@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
         this.families().push(created);
         console.log(`created family ${created.id}`);
       }
-  )
+    );
   }
 
   ngOnInit(): void {
@@ -32,10 +32,24 @@ export class AppComponent implements OnInit {
         this.families.set(result)
         console.log(`loaded all ${result.length} families`);
       }
-    )
+    );
   }
 
   familyDeleted(deletedFamily: Family) {
     this.families.set(this.families().filter((f: Family) => f.id !== deletedFamily.id));
+  }
+
+  familyChanged(changedFamily: Family) {
+    this.families.update(ff => {
+      const result: Family[] = Array<Family>();
+      for (const fam of ff) {
+        if (fam.id === changedFamily.id) {
+          fam.takeValuesFrom(changedFamily);
+          fam.takeMembersFrom(changedFamily);
+        }
+        result.push(fam);
+      }
+      return result;
+    });
   }
 }

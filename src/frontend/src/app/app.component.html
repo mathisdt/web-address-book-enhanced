@@ -4,7 +4,7 @@
 <br /><br />
 <div class="flex col fs" style="width: 100%">
   @for (family of families(); track family.id) {
-    <div class="border1"><family-component [family]="family" (familyDeleted)="familyDeleted($event)" /></div>
+    <div class="border1"><family-component [family]="family" (familyChanged)="familyChanged($event)" (familyDeleted)="familyDeleted($event)" /></div>
   }
   <div class="border1"><button class="mt1" (click)="createFamily()">Add Family</button></div>
 </div>
