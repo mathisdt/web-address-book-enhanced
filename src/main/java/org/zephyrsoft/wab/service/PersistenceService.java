@@ -107,8 +107,12 @@ public class PersistenceService {
         if (found.isEmpty()) {
             throw new EntityNotFoundException("no person with ID " + personId + " found");
         }
-        found.get().getFamily().removeMember(found.get());
-        familyRepository.save(found.get().getFamily());
+        Family family = familyRepository.findByMembersContaining(found.get());
+        boolean removed = family.removeMember(found.get());
+        if (!removed) {
+            throw new IllegalStateException("person with ID " + found.get().getId() + " was not a member of family with ID " + family.getId());
+        }
+        familyRepository.save(family);
         personRepository.delete(found.get());
     }
 
@@ -120,12 +124,13 @@ public class PersistenceService {
         if (found.isEmpty()) {
             throw new EntityNotFoundException("no person with ID " + personId + " found");
         }
-        if (!found.get().getFamily().mayMoveUp(found.get())) {
+        Family family = familyRepository.findByMembersContaining(found.get());
+        if (!family.mayMoveUp(found.get())) {
             throw new UnsupportedOperationException("person " + personId + " can't move up");
         }
-        found.get().getFamily().moveUp(found.get());
-        familyRepository.save(found.get().getFamily());
-        return found.get().getFamily();
+        family.moveUp(found.get());
+        familyRepository.save(family);
+        return family;
     }
 
     public Family movePersonDown(@PathVariable Long personId) {
@@ -136,11 +141,12 @@ public class PersistenceService {
         if (found.isEmpty()) {
             throw new EntityNotFoundException("no person with ID " + personId + " found");
         }
-        if (!found.get().getFamily().mayMoveDown(found.get())) {
+        Family family = familyRepository.findByMembersContaining(found.get());
+        if (!family.mayMoveDown(found.get())) {
             throw new UnsupportedOperationException("person " + personId + " can't move down");
         }
-        found.get().getFamily().moveDown(found.get());
-        familyRepository.save(found.get().getFamily());
-        return found.get().getFamily();
+        family.moveDown(found.get());
+        familyRepository.save(family);
+        return family;
     }
 }

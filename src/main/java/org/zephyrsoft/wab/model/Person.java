@@ -11,7 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.TableGenerator;
 import jakarta.persistence.Version;
@@ -52,10 +51,6 @@ public class Person implements HasContacts, ComparableBean<Person> {
 	private String contact3;
 	private String remarks;
 	private Integer ordering;
-
-	@JsonIgnore
-	@ManyToOne
-	private Family family;
 
 	public String getName() {
 		return Stream.of(firstName, lastName)

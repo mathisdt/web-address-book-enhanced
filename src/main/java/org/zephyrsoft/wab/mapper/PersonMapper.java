@@ -9,11 +9,9 @@ import org.zephyrsoft.wab.model.Person;
 
 @Mapper
 public interface PersonMapper {
-    @Mapping(target = "family", ignore = true)
     @Mapping(target = "lastUpdate", ignore = true)
     void map(Person source, @MappingTarget Person target);
 
-    @Mapping(target = "family", ignore = true)
     @Mapping(target = "lastUpdate", ignore = true)
     @Mapping(target = "id", ignore = true)
     void mapWithoutId(Person source, @MappingTarget Person target);
