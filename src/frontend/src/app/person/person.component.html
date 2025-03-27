@@ -1,0 +1,15 @@
+<div class="flex row mt1">
+  @for (field of fields; track field) {
+    <div class="mr1 w2">
+      <div class="wm100" [hidden]="isEdit()">{{ person()[field.key] }}</div>
+      <input class="w2" [title]="field.title" [hidden]="!isEdit()" [(ngModel)]="personForEdit[field.key]"/>
+    </div>
+  }
+
+  <button [hidden]="isEdit()" (click)="edit()" class="mr1">Edit</button>
+  <button [hidden]="isEdit()" (click)="moveUp()" class="mr1">Move Up</button>
+  <button [hidden]="isEdit()" (click)="moveDown()" class="mr1">Move Down</button>
+  <button [hidden]="isEdit()" (click)="delete()">Delete</button>
+  <button [hidden]="!isEdit()" (click)="save()" class="mr1">Save</button>
+  <button [hidden]="!isEdit()" (click)="cancel()">Cancel</button>
+</div>

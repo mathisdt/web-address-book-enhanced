@@ -1,9 +1,11 @@
 import {Component, inject, input, output, signal} from '@angular/core';
-import {Family} from '../model/Family';
-import {Person} from '../model/Person';
-import {PersonComponent} from '../person-component/person.component';
+import {Family} from './model/Family';
+import {FamilyHelper} from './model/FamilyHelper';
+import {Person} from '../person/model/Person';
+import {PersonComponent} from '../person/person.component';
 import {FormsModule} from '@angular/forms';
 import {BackendService} from '../backend.service';
+import {PersonHelper} from '../person/model/PersonHelper';
 
 @Component({
   selector: 'family-component',
@@ -15,48 +17,49 @@ import {BackendService} from '../backend.service';
   styleUrl: './family.component.css'
 })
 export class FamilyComponent {
-  private backend: BackendService = inject(BackendService);
+  private readonly backend = inject(BackendService);
   family = input.required<Family>();
   familyChanged = output<Family>();
   familyDeleted = output<Family>();
   protected isEdit = signal(false);
-  familyForEdit : Family = new Family(null, null, null, null, null, null, null, null);
+  familyForEdit: Family = <Family>{}; // im Model null initialisieren
+
+  fields = ['lastName', 'street', 'postalCode', 'city', 'contact1', 'contact2', 'contact3', 'remarks'];
 
   edit() {
-    this.familyForEdit = new Family(
-      this.family().lastName,
-      this.family().street,
-      this.family().postalCode,
-      this.family().city,
-      this.family().contact1,
-      this.family().contact2,
-      this.family().contact3,
-      this.family().remarks);
+    // object destructuring:
+    const {lastName, street, postalCode, city, contact1, contact2, contact3, remarks} = this.family();
+    this.familyForEdit = FamilyHelper.createFamily(lastName, street, postalCode, city, contact1, contact2, contact3, remarks);
 
     this.isEdit.set(true);
   }
 
   delete() {
-    this.backend.deleteFamily(<number>this.family().id).subscribe(
-      () => {
+    this.backend.deleteFamily(<number>this.family().id).subscribe({
+      next: () => {
         console.log(`deleted family ${this.family().id}`);
         this.familyDeleted.emit(this.family());
+      },
+      error: error => {
+        console.error(`failed to delete family ${this.family().id}:`, error);
       }
-    );
+    });
   }
 
   addMember() {
-    this.backend.createPersonForFamily(<number>this.family().id).subscribe(
-      created => {
-        if (this.family().members === null) {
-          this.family().members = new Array<Person>();
-        }
-        // @ts-ignore
-        this.family().members.push(created);
+    this.backend.createPersonForFamily(<number>this.family().id).subscribe({
+      next: created => {
+        // initialize with empty array if null:
+        this.family().members ??= [];
+
+        this.family().members?.push(created);
         this.familyChanged.emit(this.family());
         console.log(`created person ${created.id} for family ${this.family().id}`)
+      },
+      error: error => {
+        console.error(`failed to create person for family ${this.family().id}:`, error);
       }
-    )
+    });
   }
 
   memberDeleted(deletedMember: Person) {
@@ -71,14 +74,17 @@ export class FamilyComponent {
   }
 
   save() {
-    this.family().takeValuesFrom(this.familyForEdit);
+    FamilyHelper.copyFamilyValues(this.familyForEdit, this.family());
 
-    this.backend.updateFamily(this.family()).subscribe(
-      () => {
+    this.backend.updateFamily(this.family()).subscribe({
+      next: () => {
         this.familyChanged.emit(this.family());
         console.log(`saved family with ID ${this.family().id}`);
+      },
+      error: error => {
+        console.error(`failed to save family with ID ${this.family().id}:`, error);
       }
-    );
+    });
 
     this.isEdit.set(false);
   }
@@ -90,7 +96,7 @@ export class FamilyComponent {
   personChanged(changedPerson: Person) {
     for (const person of this.family().members!) {
       if (person.id === changedPerson.id) {
-        person.takeValuesFrom(changedPerson);
+        PersonHelper.copyPersonValues(changedPerson, person);
         break;
       }
     }

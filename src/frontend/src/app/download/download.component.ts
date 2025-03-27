@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'download-component',
@@ -7,8 +8,9 @@ import {Component} from '@angular/core';
   styleUrl: './download.component.css'
 })
 export class DownloadComponent {
+  baseUrl: string = environment.backendUrl;
 
   export() {
-    window.open("http://localhost:8080/data/report", "_blank");
+    window.open(`${this.baseUrl}/report`, "_blank");
   }
 }

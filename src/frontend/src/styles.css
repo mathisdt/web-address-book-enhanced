@@ -1,6 +1,9 @@
 .fs {
   font-size: smaller;
 }
+.inline-block {
+  display: inline-block;
+}
 .flex {
   display: flex;
 }
@@ -33,6 +36,9 @@
 }
 .w2 {
   width: 160px;
+}
+.w100 {
+  width: 100%;
 }
 .wm100 {
   max-width: 100%;

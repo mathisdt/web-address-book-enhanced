@@ -1,6 +1,6 @@
 import {Component, effect, input, InputSignal, OnChanges, signal, SimpleChanges, WritableSignal} from '@angular/core';
-import {Family} from '../model/Family';
-import {EmailBatch} from '../model/EmailBatch';
+import {Family} from '../family/model/Family';
+import {EmailBatch} from './model/EmailBatch';
 
 @Component({
   selector: 'email-component',
@@ -9,49 +9,37 @@ import {EmailBatch} from '../model/EmailBatch';
   styleUrl: './email.component.css'
 })
 export class EmailComponent {
-  families: InputSignal<Family[]> = input.required<Family[]>();
-  batchSize: WritableSignal<number> = signal<number>(0);
-  batches: WritableSignal<EmailBatch[]> = signal<EmailBatch[]>(Array<EmailBatch>());
+  families = input.required<Family[]>();
+  batchSize = signal<number>(0);
+  batches = signal<EmailBatch[]>([]);
 
-  private emailRegEx: RegExp = new RegExp("^\\S+@\\S+\\.\\S+$");
+  private readonly emailRegEx = /^\S+@\S+\.\S+$/;
 
   constructor() {
     effect(() => {
-      console.log(`detected ${this.families().length} families`)
       this.calculateBatches(this.batchSize());
     });
   }
 
   extractEmailAddresses(): string[] {
-    let result: string[] = Array<string>();
+    const emailAddresses: string[] = [];
+
     for (const family of this.families()) {
-      if (this.isEmailAddress(family.contact1)) {
-        result.push(<string>family.contact1);
-      }
-      if (this.isEmailAddress(family.contact2)) {
-        result.push(<string>family.contact2);
-      }
-      if (this.isEmailAddress(family.contact3)) {
-        result.push(<string>family.contact3);
-      }
+      [family.contact1, family.contact2, family.contact3]
+        .filter(contact => this.isEmailAddress(contact))
+        .forEach(email => emailAddresses.push(email as string));
+
       if (family.members) {
         for (const person of family.members) {
-          if (this.isEmailAddress(person.contact1)) {
-            result.push(<string>person.contact1);
-          }
-          if (this.isEmailAddress(person.contact2)) {
-            result.push(<string>person.contact2);
-          }
-          if (this.isEmailAddress(person.contact3)) {
-            result.push(<string>person.contact3);
-          }
+          [person.contact1, person.contact2, person.contact3]
+            .filter(contact => this.isEmailAddress(contact))
+            .forEach(email => emailAddresses.push(email as string));
         }
       }
     }
-    // no duplicates in output:
-    return result.filter(function (elem, index, self) {
-      return index === self.indexOf(elem);
-    });
+
+    // use set to eliminate duplicates
+    return [...new Set(emailAddresses)];
   }
 
   private isEmailAddress(contact: string | null): boolean {
@@ -59,10 +47,9 @@ export class EmailComponent {
   }
 
   calculateBatches(batchSize: number = 0): void {
-    console.log(`calculating batches with batch size ${batchSize}`)
-    this.batchSize.update(oldBatchSize => batchSize);
+    this.batchSize.set(batchSize);
     const emailAddresses: string[] = this.extractEmailAddresses();
-    const result: EmailBatch[] = Array<EmailBatch>();
+    const result: EmailBatch[] = [];
     if (batchSize === 0) {
       result.push({
         index: 0,

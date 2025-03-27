@@ -1,8 +1,8 @@
 <h1>{{title}}</h1>
-<div style="display:inline-block"><download-component /></div>
-<div class="ml1" style="display:inline-block"><email-component [families]="families()"/></div>
+<div class="inline-block"><download-component /></div>
+<div class="ml1 inline-block"><email-component [families]="families()"/></div>
 <br /><br />
-<div class="flex col fs" style="width: 100%">
+<div class="flex col fs w100">
   @for (family of families(); track family.id) {
     <div class="border1"><family-component [family]="family" (familyChanged)="familyChanged($event)" (familyDeleted)="familyDeleted($event)" /></div>
   }

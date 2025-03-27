@@ -1,0 +1,23 @@
+<div class="flex row mt1">
+  @for (field of fields; track field) {
+    <div class="mr1 w1">
+      @if (!isEdit()) {
+        <div class="wm100">{{family()[field]}}</div>
+      } @else {
+        <input class="w1" [title]="field" [(ngModel)]="familyForEdit[field]"/>
+      }
+    </div>
+  }
+  <div class="mr1">
+    <button [hidden]="isEdit()" (click)="edit()">Edit</button>
+    <button [hidden]="!isEdit()" (click)="save()" class="mr1">Save</button>
+    <button [hidden]="!isEdit()" (click)="cancel()">Cancel</button>
+  </div>
+  <div class="mr1"><button (click)="delete()">Delete</button></div>
+</div>
+<div class="flex col indent1 mb1">
+  @for (person of family().members; track person.id) {
+    <person-component [person]="person" (personChanged)="personChanged($event)" (personDeleted)="memberDeleted($event)" (personReordered)="membersReordered($event)" />
+  }
+  <div class="mt1"><button (click)="addMember()">Add Member</button></div>
+</div>

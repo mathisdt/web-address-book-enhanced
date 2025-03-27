@@ -1,9 +1,10 @@
 import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
-import {FamilyComponent} from './family-component/family.component';
-import {DownloadComponent} from './download-component/download.component';
-import {EmailComponent} from './email-component/email.component';
-import {Family} from './model/Family';
+import {FamilyComponent} from './family/family.component';
+import {DownloadComponent} from './download/download.component';
+import {EmailComponent} from './email/email.component';
+import {Family} from './family/model/Family';
 import {BackendService} from './backend.service';
+import {FamilyHelper} from './family/model/FamilyHelper';
 
 @Component({
   selector: 'app-root',
@@ -12,27 +13,29 @@ import {BackendService} from './backend.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-  backend: BackendService = inject(BackendService);
+  private readonly backend = inject(BackendService);
 
   title = 'Web Address Book';
   families: WritableSignal<Family[]> = signal<Family[]>([]);
 
   createFamily() {
-    this.backend.createFamily().subscribe(
-      created => {
+    this.backend.createFamily().subscribe({
+      next: created => {
         this.families().push(created);
         console.log(`created family ${created.id}`);
-      }
-    );
+      },
+      error: error => console.error(`failed to create family:`, error)
+    });
   }
 
   ngOnInit(): void {
-    this.backend.readAllFamilies().subscribe(
-      result => {
+    this.backend.readAllFamilies().subscribe({
+      next: result => {
         this.families.set(result)
         console.log(`loaded all ${result.length} families`);
-      }
-    );
+      },
+      error: error => console.error(`failed to load all families:`, error)
+    });
   }
 
   familyDeleted(deletedFamily: Family) {
@@ -41,11 +44,11 @@ export class AppComponent implements OnInit {
 
   familyChanged(changedFamily: Family) {
     this.families.update(ff => {
-      const result: Family[] = Array<Family>();
+      const result: Family[] = [];
       for (const fam of ff) {
         if (fam.id === changedFamily.id) {
-          fam.takeValuesFrom(changedFamily);
-          fam.takeMembersFrom(changedFamily);
+          FamilyHelper.copyFamilyValues(changedFamily, fam);
+          FamilyHelper.copyFamilyMembers(changedFamily, fam);
         }
         result.push(fam);
       }
