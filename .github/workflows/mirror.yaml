@@ -9,7 +9,8 @@ on:
       - "**"
 
 jobs:
-  release:
+  mirror:
+    name: to codeberg.org
     uses: mathisdt/workflows/.github/workflows/mirror-repository.yaml@master
     with:
       target-repo: git@codeberg.org:mathisdt/web-address-book-enhanced.git
