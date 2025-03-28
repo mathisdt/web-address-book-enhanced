@@ -4,8 +4,7 @@ import {environment} from '../../environments/environment';
 @Component({
   selector: 'download-component',
   imports: [],
-  templateUrl: './download.component.html',
-  styleUrl: './download.component.css'
+  templateUrl: './download.component.html'
 })
 export class DownloadComponent {
   baseUrl: string = environment.backendUrl;

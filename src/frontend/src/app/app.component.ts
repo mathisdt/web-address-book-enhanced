@@ -9,8 +9,7 @@ import {FamilyHelper} from './family/model/FamilyHelper';
 @Component({
   selector: 'app-root',
   imports: [FamilyComponent, DownloadComponent, EmailComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   private readonly backend = inject(BackendService);

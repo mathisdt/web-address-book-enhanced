@@ -13,8 +13,7 @@ import {PersonHelper} from '../person/model/PersonHelper';
     PersonComponent,
     FormsModule
   ],
-  templateUrl: './family.component.html',
-  styleUrl: './family.component.css'
+  templateUrl: './family.component.html'
 })
 export class FamilyComponent {
   private readonly backend = inject(BackendService);

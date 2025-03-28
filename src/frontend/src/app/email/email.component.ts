@@ -5,8 +5,7 @@ import {EmailBatch} from './model/EmailBatch';
 @Component({
   selector: 'email-component',
   imports: [],
-  templateUrl: './email.component.html',
-  styleUrl: './email.component.css'
+  templateUrl: './email.component.html'
 })
 export class EmailComponent {
   families = input.required<Family[]>();
