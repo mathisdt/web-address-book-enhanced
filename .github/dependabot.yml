@@ -12,3 +12,15 @@ updates:
     labels:
       - "dependencies"
       - "automatic-merge"
+  - package-ecosystem: "npm"
+    directory: "/src/frontend"
+    schedule:
+      interval: "daily"
+      time: "04:00"
+      timezone: "Europe/Berlin"
+    open-pull-requests-limit: 100
+    allow:
+      - dependency-type: "direct"
+    labels:
+      - "dependencies"
+      - "automatic-merge"
