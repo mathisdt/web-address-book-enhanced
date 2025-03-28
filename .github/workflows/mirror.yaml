@@ -1,0 +1,16 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 1,13 * * *"
+  push:
+    branches:
+      - "**"
+
+jobs:
+  release:
+    uses: mathisdt/workflows/.github/workflows/mirror-repository.yaml@master
+    with:
+      target-repo: git@codeberg.org:mathisdt/web-address-book-enhanced.git
+    secrets: inherit
