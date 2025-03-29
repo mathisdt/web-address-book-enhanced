@@ -45,7 +45,7 @@ build-and-release-on-github:
                if [ -n "$PATTERN_TO_RELEASE" ]; then \
                    export files=$(ls $PATTERN_TO_RELEASE); \
                    echo FILES: $files; \
-               else; \
+               else \
                    unset files; \
                    echo NO FILES GIVEN; \
                fi; \
