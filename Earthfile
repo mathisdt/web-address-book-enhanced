@@ -38,6 +38,5 @@ build-and-release-on-github:
     RUN --push release_timestamp=$(date '+%Y-%m-%d @ %H:%M')
     RUN --push release_timestamp_terse=$(date '+%Y-%m-%d-%H-%M')
     RUN --push release_hash=$(git rev-parse --short HEAD)
-    RUN --push echo $GITHUB_TOKEN | gh auth login --with-token
     RUN --push gh release create "release-$release_timestamp_terse-$release_hash" --target "$release_hash" --title "Release $release_timestamp" --notes "built from commit $release_hash"
     RUN --push if [ -n "$PATTERN_TO_RELEASE" ]; then gh release upload "release-$release_timestamp_terse-$release_hash" $(ls $PATTERN_TO_RELEASE); else echo "no PATTERN_TO_RELEASE was given, so no files were attached to the release"; fi

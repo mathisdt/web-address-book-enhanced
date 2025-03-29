@@ -1,5 +1,5 @@
-name: Mirror repository
-run-name: Mirror repository to codeberg.org
+name: mirror repository
+run-name: mirror repository to codeberg.org
 
 on:
   workflow_dispatch:
