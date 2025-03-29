@@ -37,8 +37,9 @@ build-and-release-on-github:
     RUN apt update && apt install -y gh
     RUN --push export release_timestamp=$(date '+%Y-%m-%d @ %H:%M'); \
                export release_timestamp_terse=$(date '+%Y-%m-%d-%H-%M'); \
-               export release_hash=$(git rev-parse --short HEAD); \
-               export tag=release-$release_timestamp_terse-$release_hash; \
+               export release_hash_short=$(git rev-parse --short HEAD); \
+               export release_hash=$(git rev-parse HEAD); \
+               export tag=release-$release_timestamp_terse-$release_hash_short; \
                echo TIMESTAMP: $release_timestamp; \
                echo HASH: $release_hash; \
                echo TAG: $tag; \
@@ -49,5 +50,5 @@ build-and-release-on-github:
                    unset files; \
                    echo NO FILES GIVEN; \
                fi; \
-               gh release create $tag --target $release_hash --title "Release $release_timestamp" --notes "built from commit $release_hash" $files
+               gh release create $tag --target $release_hash --title "Release $release_timestamp" --notes "built from commit $release_hash_short" $files
 
