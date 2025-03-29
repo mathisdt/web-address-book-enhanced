@@ -38,7 +38,13 @@ build-and-release-on-github:
     RUN --push export release_timestamp=$(date '+%Y-%m-%d @ %H:%M'); \
                export release_timestamp_terse=$(date '+%Y-%m-%d-%H-%M'); \
                export release_hash=$(git rev-parse --short HEAD); \
-               gh release create "release-$release_timestamp_terse-$release_hash" --target "$release_hash" --title "Release $release_timestamp" --notes "built from commit $release_hash"; \
+               export tag=release-$release_timestamp_terse-$release_hash; \
+               echo TIMESTAMP: $release_timestamp; \
+               echo HASH: $release_hash; \
+               echo TAG: $tag; \
+               gh release create $tag --target $release_hash --title "Release $release_timestamp" --notes "built from commit $release_hash"; \
                if [ -n "$PATTERN_TO_RELEASE" ]; then \
-                   gh release upload "release-$release_timestamp_terse-$release_hash" $(ls $PATTERN_TO_RELEASE); else echo "no PATTERN_TO_RELEASE was given, so no files were attached to the release"; \
+                   export files=$(ls $PATTERN_TO_RELEASE); \
+                   echo FILES: $files; \
+                   gh release upload $tag $files; else echo "no PATTERN_TO_RELEASE was given, so no files were attached to the release"; \
                fi
