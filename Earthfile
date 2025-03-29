@@ -42,9 +42,12 @@ build-and-release-on-github:
                echo TIMESTAMP: $release_timestamp; \
                echo HASH: $release_hash; \
                echo TAG: $tag; \
-               gh release create $tag --target $release_hash --title "Release $release_timestamp" --notes "built from commit $release_hash"; \
                if [ -n "$PATTERN_TO_RELEASE" ]; then \
                    export files=$(ls $PATTERN_TO_RELEASE); \
                    echo FILES: $files; \
-                   gh release upload $tag $files; else echo "no PATTERN_TO_RELEASE was given, so no files were attached to the release"; \
-               fi
+               else; \
+                   unset files; \
+                   echo NO FILES GIVEN; \
+               fi; \
+               gh release create $tag --target $release_hash --title "Release $release_timestamp" --notes "built from commit $release_hash" $files
+
