@@ -8,10 +8,6 @@
 - provide family data (which is the same for all family members) _and_ individual data for any family member if applicable
 - export a formatted PDF
 
-## Technology
-
-The backend is written in Java and Spring Boot, while the frontend uses Angular.
-
 ## Getting started
 
 - if you don't have it yet: download and install Java 21 or later
@@ -40,3 +36,15 @@ The backend is written in Java and Spring Boot, while the frontend uses Angular.
   ```
 - start the application using `java -jar THE-JAR-YOU-DOWNLOADED.jar --spring.profiles.active=prod`
   or `java -jar THE-JAR-YOU-DOWNLOADED.jar --spring.config.location=file:/path/to/application-prod.properties`
+
+## Technology
+
+The backend is written in Java and Spring Boot, while the frontend uses Angular.
+
+## Build using Earthly
+
+The CI build of this project uses [Earthly](https://docs.earthly.dev/), which in turn uses
+container virtualization (e.g. Docker or Podman). You can also run the build locally (if you
+have Earthly as well as an OCI compatible container engine installed) by executing
+`earthly +build`. This will create a container with everything needed for the build,
+create the package inside it and then copy the results to the directory `target` for you.
