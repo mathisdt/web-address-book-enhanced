@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <title>Frontend</title>
-  <base href="/">
+  <script>
+    const base = document.createElement('base');
+    base.href = `${location.pathname}${location.pathname.endsWith('/') ? '' : '/'}`;
+    document.getElementsByTagName('head')[0].appendChild(base);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
