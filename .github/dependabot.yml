@@ -21,6 +21,10 @@ updates:
     open-pull-requests-limit: 100
     allow:
       - dependency-type: "direct"
+    groups:
+      angular:
+        patterns:
+          - "@angular/*"
     labels:
       - "dependencies"
       - "automatic-merge"
