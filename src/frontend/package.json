@@ -15,7 +15,7 @@
     "@angular/core": "^19.2.5",
     "@angular/forms": "^19.2.5",
     "@angular/platform-browser": "^19.2.5",
-    "@angular/platform-browser-dynamic": "^19.2.5",
+    "@angular/platform-browser-dynamic": "^19.2.6",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
