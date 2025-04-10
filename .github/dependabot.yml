@@ -24,7 +24,7 @@ updates:
     groups:
       angular:
         patterns:
-          - "@angular/*"
+          - "@angular*"
     labels:
       - "dependencies"
       - "automatic-merge"
