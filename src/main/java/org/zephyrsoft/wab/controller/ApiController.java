@@ -2,6 +2,8 @@ package org.zephyrsoft.wab.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,14 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.zephyrsoft.wab.model.Family;
 import org.zephyrsoft.wab.model.Person;
+import org.zephyrsoft.wab.report.Report;
 import org.zephyrsoft.wab.service.PersistenceService;
 import org.zephyrsoft.wab.service.ReportService;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -88,8 +91,12 @@ public class ApiController {
     }
 
     @GetMapping(value = "/report", produces = MediaType.APPLICATION_PDF_VALUE)
-    @ResponseBody
-    public byte[] createReport() {
-        return reportService.exportAsPdf();
+    public HttpEntity<byte[]> createReport(HttpServletResponse response) {
+        Report report = reportService.exportAsPdf();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + report.getFilename());
+
+        return new HttpEntity<>(report.getContent(), headers);
     }
 }

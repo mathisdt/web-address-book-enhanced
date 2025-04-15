@@ -3,6 +3,7 @@ package org.zephyrsoft.wab.service;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +20,7 @@ import org.zephyrsoft.wab.model.Person;
 import org.zephyrsoft.wab.report.FamilyReportField;
 import org.zephyrsoft.wab.report.HeaderReportField;
 import org.zephyrsoft.wab.report.PersonReportField;
+import org.zephyrsoft.wab.report.Report;
 import org.zephyrsoft.wab.repository.FamilyRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -29,18 +31,22 @@ import static java.util.stream.Collectors.joining;
 @RequiredArgsConstructor
 public class ReportService {
     private static final Pattern PLACEHOLDER = Pattern.compile("\\{([^}]+)}");
+    private static final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
 
     private final ReportConfiguration reportConfiguration;
     private final FamilyRepository familyRepository;
 
-    public byte[] exportAsPdf() {
+    public Report exportAsPdf() {
         String html = createHtml();
         ITextRenderer renderer = new ITextRenderer();
         renderer.setDocumentFromString(toXHTML(html));
         renderer.layout();
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         renderer.createPDF(outStream);
-        return outStream.toByteArray();
+        return Report.builder()
+            .filename(reportConfiguration.getTitle() + "-" + TIMESTAMP_FORMATTER.format(LocalDateTime.now()) + ".pdf")
+            .content(outStream.toByteArray())
+            .build();
     }
 
     String createHtml() {
