@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.zephyrsoft.wab.report.Report;
 import org.zephyrsoft.wab.repository.FamilyRepository;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +22,13 @@ public class ReportServiceIT {
 
     @Test
     void reportIsCreated() {
-        byte[] bytes = reportService.exportAsPdf();
+        Report report = reportService.exportAsPdf();
 
-        assertThat(bytes).isNotNull().isNotEmpty();
-        log.info("report had {} bytes ({} kB) and contained {} families",
-            bytes.length, bytes.length / 1024, familyRepository.findAll().size());
+        assertThat(report.getContent()).isNotNull().isNotEmpty();
+        assertThat(report.getFilename()).isNotEmpty();
+        log.info("report with filename {} had {} bytes ({} kB) and contained {} families",
+            report.getFilename(), report.getContent().length, report.getContent().length / 1024,
+            familyRepository.findAll().size());
     }
 
     @Test

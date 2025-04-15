@@ -129,6 +129,7 @@
     </developers>
 
     <build>
+        <finalName>web-address-book-enhanced-${parsedVersion.majorVersion}.${parsedVersion.minorVersion}-${git.commit.id.abbrev}</finalName>
         <resources>
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
@@ -290,7 +291,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <attach>true</attach>
-                    <finalName>web-address-book-enhanced-${parsedVersion.majorVersion}.${parsedVersion.minorVersion}-${git.commit.id.abbrev}</finalName>
                 </configuration>
             </plugin>
         </plugins>
