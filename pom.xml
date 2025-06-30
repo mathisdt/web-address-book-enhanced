@@ -39,7 +39,7 @@
 
         <!-- dependency versions -->
         <jsoup.version>1.21.1</jsoup.version>
-        <flying-saucer.version>9.12.1</flying-saucer.version>
+        <flying-saucer.version>9.13.0</flying-saucer.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     </properties>
@@ -84,6 +84,12 @@
             <groupId>org.xhtmlrenderer</groupId>
             <artifactId>flying-saucer-pdf</artifactId>
             <version>${flying-saucer.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
