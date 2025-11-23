@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.7</version>
+        <version>4.0.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -17,7 +17,7 @@
 
     <name>Web Address Book</name>
     <description>family-oriented address book</description>
-    <url>http://www.zephyrsoft.org</url>
+    <url>https://zephyrsoft.org</url>
 
     <licenses>
         <license>
@@ -51,7 +51,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -66,8 +66,8 @@
             <artifactId>postgresql</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-liquibase</artifactId>
         </dependency>
 
         <dependency>
@@ -84,12 +84,6 @@
             <groupId>org.xhtmlrenderer</groupId>
             <artifactId>flying-saucer-pdf</artifactId>
             <version>${flying-saucer.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -116,14 +110,17 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-liquibase-test</artifactId>
         </dependency>
     </dependencies>
 
     <organization>
         <name>ZephyrSoft</name>
-        <url>http://www.zephyrsoft.org</url>
+        <url>https://zephyrsoft.org</url>
     </organization>
 
     <developers>
@@ -172,7 +169,6 @@
                                         <exclude>org.slf4j:slf4j-log4j12</exclude>
                                         <exclude>org.slf4j:slf4j-jdk14</exclude>
                                         <exclude>ch.qos.logback:logback-access</exclude>
-                                        <exclude>commons-logging:commons-logging</exclude>
                                     </excludes>
                                 </bannedDependencies>
                             </rules>
