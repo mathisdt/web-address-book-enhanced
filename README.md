@@ -9,7 +9,7 @@
 ## Getting started
 
 - if you don't have it yet: download and install Java 21 or later
-- download the [latest release](https://github.com/mathisdt/web-address-book-enhanced/releases/latest)
+- download the [latest release](https://codeberg.org/mathisdt/web-address-book-enhanced/releases/latest)
 - create a database for your data (don't worry about creating tables etc. - Liquibase will take care of that)
 - create an `application-prod.properties` next to the jar file and define your database connection in it:
   ```
