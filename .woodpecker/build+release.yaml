@@ -10,36 +10,6 @@ clone:
       recursive: true
 
 steps:
-  - name: build-angular
-    when:
-      - event: [ push, manual ]
-    depends_on: []
-    image: node:22-alpine3.20
-    commands: |
-      export TZ=Europe/Berlin
-      cd src/frontend
-      npm install
-      npm run build
-  - name: build-java
-    when:
-      - event: [ push, manual ]
-    depends_on: [ build-angular ]
-    image: maven:3.9-eclipse-temurin-25-alpine
-    commands: |
-      export TZ=Europe/Berlin
-      cp src/frontend/browser/* src/main/resources/static/
-      mvn clean verify -U --no-transfer-progress
-  - name: release on Codeberg
-    when:
-      - event: manual
-        branch: [ master, main ]
-    depends_on: [ build-java ]
-    image: codeberg.org/mathisdt/releaseplugin:latest
-    pull: true
-    settings:
-      PATTERN_TO_RELEASE: 'target/web-address-book-enhanced-*.jar'
-      TOKEN:
-        from_secret: TOKEN_REPO_READWRITE
   - name: mirror to Github
     when:
       - event: [ push, manual ]
@@ -53,3 +23,35 @@ steps:
     commands: |
       git remote add github https://mathisdt:$TOKEN_GITHUB@github.com/mathisdt/$CI_REPO_NAME.git
       git push github
+  - name: build-angular
+    when:
+      - event: [ push, manual ]
+    depends_on: []
+    image: node:current-alpine
+    pull: true
+    commands: |
+      export TZ=Europe/Berlin
+      cd src/frontend
+      npm install
+      npm run build
+  - name: build-java
+    when:
+      - event: [ push, manual ]
+    depends_on: [ build-angular ]
+    image: maven:3.9-eclipse-temurin-25-alpine
+    pull: true
+    commands: |
+      export TZ=Europe/Berlin
+      cp src/frontend/dist/frontend/browser/* src/main/resources/static/
+      mvn clean verify -U --no-transfer-progress
+  - name: release on Codeberg
+    when:
+      - event: manual
+        branch: [ master, main ]
+    depends_on: [ build-java ]
+    image: codeberg.org/mathisdt/releaseplugin:latest
+    pull: true
+    settings:
+      PATTERN_TO_RELEASE: 'target/web-address-book-enhanced-*.jar'
+      TOKEN:
+        from_secret: TOKEN_REPO_READWRITE
