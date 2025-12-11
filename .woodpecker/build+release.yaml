@@ -1,0 +1,55 @@
+when:
+  - event: [push, manual]
+
+clone:
+  - name: clone
+    image: woodpeckerci/plugin-git
+    settings:
+      depth: 0
+      partial: false
+      recursive: true
+
+steps:
+  - name: build-angular
+    when:
+      - event: [ push, manual ]
+    depends_on: []
+    image: node:22-alpine3.20
+    commands: |
+      export TZ=Europe/Berlin
+      cd src/frontend
+      npm install
+      npm run build
+  - name: build-java
+    when:
+      - event: [ push, manual ]
+    depends_on: [ build-angular ]
+    image: maven:3.9-eclipse-temurin-25-alpine
+    commands: |
+      export TZ=Europe/Berlin
+      cp src/frontend/browser/* src/main/resources/static/
+      mvn clean verify -U --no-transfer-progress
+  - name: release on Codeberg
+    when:
+      - event: manual
+        branch: [ master, main ]
+    depends_on: [ build-java ]
+    image: codeberg.org/mathisdt/releaseplugin:latest
+    pull: true
+    settings:
+      PATTERN_TO_RELEASE: 'target/web-address-book-enhanced-*.jar'
+      TOKEN:
+        from_secret: TOKEN_REPO_READWRITE
+  - name: mirror to Github
+    when:
+      - event: [ push, manual ]
+        branch: [ master, main ]
+    depends_on: []
+    image: codeberg.org/mathisdt/buildhelper:latest
+    pull: true
+    environment:
+      TOKEN_GITHUB:
+        from_secret: TOKEN_GITHUB
+    commands: |
+      git remote add github https://mathisdt:$TOKEN_GITHUB@github.com/mathisdt/$CI_REPO_NAME.git
+      git push github
