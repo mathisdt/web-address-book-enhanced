@@ -27,9 +27,7 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/mathisdt/web-address-book-enhanced</url>
-        <connection>scm:git:ssh:git@github.com:mathisdt/web-address-book-enhanced.git</connection>
-        <developerConnection>scm:git:ssh:git@github.com:mathisdt/web-address-book-enhanced.git</developerConnection>
+        <url>https://codeberg.org/mathisdt/web-address-book-enhanced</url>
     </scm>
 
     <properties>
